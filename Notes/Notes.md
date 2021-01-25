@@ -225,7 +225,7 @@ In the container system CLI:
 ```bash
 LLVM_VERSION='11.0.1'
 mkdir -p "/deps" && \
-tar xvf "/z/alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" -C "/deps"
+tar xvf "/zig-build/alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" -C "/deps"
 ```
 
 
