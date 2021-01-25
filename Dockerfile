@@ -1,5 +1,7 @@
 FROM alpine:latest as builder
 
+ENV LLVM_VERSION='11.0.1'
+
 RUN apk update && \
     apk upgrade && \
     apk add \
@@ -11,6 +13,7 @@ RUN apk update && \
         python3-dev \
         cmake \
         samurai \
+        tar \
         libc-dev \
         binutils \
         zlib-static \
@@ -20,10 +23,10 @@ RUN mkdir -p /deps
 
 # llvm
 WORKDIR /deps
-RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/llvm-11.0.1.src.tar.xz
-RUN tar xf llvm-11.0.1.src.tar.xz
-RUN mkdir -p /deps/llvm-11.0.1.src/build
-WORKDIR /deps/llvm-11.0.1.src/build
+RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz
+RUN tar xf llvm-$LLVM_VERSION.src.tar.xz
+RUN mkdir -p /deps/llvm-$LLVM_VERSION.src/build
+WORKDIR /deps/llvm-$LLVM_VERSION.src/build
 RUN cmake .. \
     -DCMAKE_INSTALL_PREFIX=/deps/local \
     -DCMAKE_PREFIX_PATH=/deps/local \
@@ -36,10 +39,10 @@ RUN samu install
 
 # lld
 WORKDIR /deps
-RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/lld-11.0.1.src.tar.xz
-RUN tar xf lld-11.0.1.src.tar.xz
-RUN mkdir -p /deps/lld-11.0.1.src/build
-WORKDIR /deps/lld-11.0.1.src/build
+RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/lld-$LLVM_VERSION.src.tar.xz
+RUN tar xf lld-$LLVM_VERSION.src.tar.xz
+RUN mkdir -p /deps/lld-$LLVM_VERSION.src/build
+WORKDIR /deps/lld-$LLVM_VERSION.src/build
 RUN cmake .. \
     -DCMAKE_INSTALL_PREFIX=/deps/local \
     -DCMAKE_PREFIX_PATH=/deps/local \
@@ -50,10 +53,10 @@ RUN samu install
 
 # clang
 WORKDIR /deps
-RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/clang-11.0.1.src.tar.xz
-RUN tar xf clang-11.0.1.src.tar.xz
-RUN mkdir -p /deps/clang-11.0.1.src/build
-WORKDIR /deps/clang-11.0.1.src/build
+RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/clang-$LLVM_VERSION.src.tar.xz
+RUN tar xf clang-$LLVM_VERSION.src.tar.xz
+RUN mkdir -p /deps/clang-$LLVM_VERSION.src/build
+WORKDIR /deps/clang-$LLVM_VERSION.src/build
 RUN cmake .. \
     -DCMAKE_INSTALL_PREFIX=/deps/local \
     -DCMAKE_PREFIX_PATH=/deps/local \
