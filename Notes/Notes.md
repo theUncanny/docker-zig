@@ -118,8 +118,8 @@ In the container system CLI:
 MAKE_JOBS="-j(nproc)"
 # Based on 'master' branch
 COMMIT="master"
-# Based on a specific version
-COMMIT='0.7.1'
+# Based on a specific version (uncomment to use)
+#COMMIT='0.7.1'
 
 ARCH="$(uname -m)"
 
