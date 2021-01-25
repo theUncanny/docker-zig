@@ -33,6 +33,6 @@ chmod a+x install/bin/zig && \
 VERSION="$(install/bin/zig version)" && \
 DIRNAME="zig-linux-$ARCH-$VERSION" && \
 mv install "$DIRNAME" && \
-tar cvfJ "$DIRNAME.tar.xz" "$DIRNAME" && \
+tar cvf "$DIRNAME.tar.xz" -I 'xz -0' "$DIRNAME" && \
 chmod a+rw "$DIRNAME.tar.xz" && \
 mv "$DIRNAME.tar.xz" /z/
