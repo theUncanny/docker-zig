@@ -47,6 +47,12 @@ In the container system CLI:
 ```bash
 mkdir -p /deps
 LLVM_VERSION='11.0.1'
+# Linux x86-64 based on GNU standard C library implementation (glibc)
+#LLMV_HOST='x86_64-unknown-linux-gnu'
+#LLVM_TARGET='x86_64-unknown-linux-gnu'
+# Linux x86-64 based on Musl standard C library implementation (musl)
+LLMV_HOST='x86_64-unknown-linux-musl'
+LLVM_TARGET='x86_64-unknown-linux-musl'
 ```
 
 ### Build LLVM
@@ -66,6 +72,11 @@ cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_ENABLE_LIBXML2=OFF \
     -DLLVM_ENABLE_TERMINFO=OFF \
+    -DLLVM_BUILD_DOCS=NO \
+    -DLLVM_BUILD_EXAMPLES=NO \
+    -DLLVM_BUILD_TESTS=NO \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="$LLVM_TARGET" \
+    -DLLVM_HOST_TRIPLE="$LLMV_HOST" \
     -G Ninja && \
 samu install
 ```
@@ -85,6 +96,11 @@ cmake .. \
     -DCMAKE_PREFIX_PATH=/deps/local \
     -DCMAKE_MAKE_PROGRAM=samu \
     -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_BUILD_DOCS=NO \
+    -DLLVM_BUILD_EXAMPLES=NO \
+    -DLLVM_BUILD_TESTS=NO \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="$LLVM_TARGET" \
+    -DLLVM_HOST_TRIPLE="$LLMV_HOST" \
     -G Ninja && \
 samu install
 ```
@@ -104,6 +120,11 @@ cmake .. \
     -DCMAKE_PREFIX_PATH=/deps/local \
     -DCMAKE_MAKE_PROGRAM=samu \
     -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_BUILD_DOCS=NO \
+    -DLLVM_BUILD_EXAMPLES=NO \
+    -DLLVM_BUILD_TESTS=NO \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="$LLVM_TARGET" \
+    -DLLVM_HOST_TRIPLE="$LLMV_HOST" \
     -G Ninja && \
 samu install
 ```
