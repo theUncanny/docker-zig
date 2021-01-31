@@ -39,6 +39,7 @@ apk add \
     binutils \
     zlib-static \
     libstdc++ \
+    grep \
     git \
     xz
 ```
@@ -191,6 +192,8 @@ In the container system CLI:
 
 ```bash
 LLVM_VERSION='11.0.1'
+LLVM_TARGET="/deps/local/bin/clang --version | grep -o -P "$(uname -m)[\W,\w]+"
+#LLVM_TARGET="x86_64-unknown-linux-musl"
 cd "/zig-build/" && \
 tar cvf \
     "alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" \
@@ -230,8 +233,6 @@ LLVM_VERSION='11.0.1'
 mkdir -p "/deps" && \
 tar xvf "/zig-build/alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" -C "/deps"
 ```
-
-
 
 ## Extra info
 
