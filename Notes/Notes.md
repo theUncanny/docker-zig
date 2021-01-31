@@ -181,13 +181,16 @@ samu install
 In the container system CLI:
 
 ```bash
+# Maximum number of parallel 'make' build jobs
 MAKE_JOBS="-j$(nproc)"
 # Based on 'master' branch
 COMMIT="master"
 # Based on a specific version (uncomment to use)
 #COMMIT='0.7.1'
-
+# Host (and container) architecture
 ARCH="$(uname -m)"
+# Zig prefix install directory
+ZIG_INSTALL_PREFIX='/deps/install'
 
 cd "/deps" && \
 git clone https://github.com/zig-lang/zig && \
@@ -197,13 +200,14 @@ cd "/deps/zig" && \
 # If you prefer use the master/main branch, uncomment the next line
 #COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
 git checkout "$COMMIT" && \
+mkdir -p "$ZIG_INSTALL_PREFIX" && \
 mkdir -p "/deps/zig/build" && \
 cd "/deps/zig/build" && \
 cmake .. \
     -DZIG_STATIC=on \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=/deps/local \
-    -DCMAKE_INSTALL_PREFIX=/deps/install && \
+    -DCMAKE_INSTALL_PREFIX="$ZIG_INSTALL_PREFIX" && \
 make "$MAKE_JOBS" install && \
 cd "/deps/zig/build" && \
 ./zig build docs && \
@@ -212,18 +216,127 @@ mkdir -p "docs" && \
     -femit-docs=docs/std \
     -fno-emit-bin \
     --override-lib-dir ../lib && \
-mv "docs" "/deps/install/docs" && \
-mv "../zig-cache/langref.html" "/deps/install/docs/" && \
-mv "../LICENSE" "/deps/install/" && \
-cd "/deps" && \
-chmod a+x "install/bin/zig" && \
+mv "docs" "$ZIG_INSTALL_PREFIX/docs" && \
+mv "../zig-cache/langref.html" "$ZIG_INSTALL_PREFIX/docs/" && \
+mv "../LICENSE" "$ZIG_INSTALL_PREFIX/" && \
+chmod a+x "$ZIG_INSTALL_PREFIX/bin/zig" && \
+cd "/deps"
+```
+
+Compress (in a `.tar.xz` file) the `zig` toolchain build in a package (to backup, copy and distribute it) from the container systm to the host system:
+
+```bash
 VERSION="$(install/bin/zig version)" && \
 DIRNAME="zig-linux-$ARCH-$VERSION" && \
+cd "/deps" && \
 mv install "$DIRNAME" && \
 tar cvfJ "$DIRNAME.tar.xz" "$DIRNAME" && \
 chmod a+rw "$DIRNAME.tar.xz" && \
 mv "$DIRNAME.tar.xz" "/zig-build/"
 ```
+
+## Optional: Build `zls` (Zig Language Server)
+
+- https://github.com/zigtools/zls
+- https://github.com/zigtools/zls/wiki/Downloading-and-Building-ZLS
+- https://github.com/zigtools/zls/blob/master/README.md#configuration-options
+- https://github.com/zigtools/zls/blob/master/README.md#usage
+- https://github.com/ziglibs/known-folders#folder-list
+
+In the container system CLI:
+
+```bash
+# Zig prefix install directory
+ZIG_INSTALL_PREFIX='/deps/install'
+COMMIT='master'
+cd "/deps" && \
+git clone --recurse-submodules https://github.com/zigtools/zls.git && \
+cd "/deps/zls" && \
+# If you prefer the latest stable version, uncomment the next line
+#COMMIT="$(git --no-pager tag | sort -rV | head -1)"
+# If you prefer use the master/main branch, uncomment the next line
+#COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
+git checkout "$COMMIT" && \
+/deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT" && \
+cp 'zig-cache/bin/zls' "$ZIG_INSTALL_PREFIX/bin/" && \
+cp 'zig-cache/bin/zls.json' "$ZIG_INSTALL_PREFIX/bin/" && \
+chmod a+x "$ZIG_INSTALL_PREFIX/bin/zls"
+```
+
+- ZLS configuration file `zls.json`:
+
+```json
+{
+  "zig_exe_path": null,
+  "zig_lib_path": null,
+  "build_runner_path": null,
+  "build_runner_cache_path": null, 
+  "enable_snippets": true,
+  "warn_style": true,
+  "enable_semantic_tokens": true,
+  "operator_completions": true
+}
+```
+
+- `zig_exe_path`: Set to `null` value so the `zls` look up the `zig` binary in `PATH` environment variable (when it is setup, the `zig` binary absolute path must be `$ZIG_TOOLCHAIN_PATH/bin/zig`). Will be used to infer the zig standard library path if none is provided.
+- `zig_lib_path`: Set to `null` because `zig` binary will be used to infer the zig standard library path if none is provided.
+
+----
+
+**[NOTE]**
+
+Generate a `zls` configuration file (`zls.json`):
+
+```bash
+/deps/zig/build/zig build config
+```
+
+Output:
+
+```bash
+Welcome to the ZLS configuration wizard! (insert mage emoji here)
+Looking for 'zig' in PATH...
+Could not find 'zig' in PATH
+? What is the path to the 'zig' executable you would like to use? > /deps/zig/build/zig
+? Do you want to enable snippets? (y/n) > y
+? Do you want to enable style warnings? (y/n) > y
+? Do you want to enable semantic highlighting? (y/n) > y
+? Do you want to enable .* and .? completions (y/n) > y
+Writing to config...
+Successfully saved configuration options!
+? Which code editor do you use? (select one)
+
+  - VSCode
+  - Sublime
+  - Kate
+  - Neovim
+  - Vim8
+  - Emacs
+  - Other
+
+> Other
+
+We might not *officially* support your editor, but you can definitely still use ZLS!
+Simply configure your editor for use with language servers and point it to the ZLS executable!
+You can find the ZLS executable in the "zig-cache/bin" by default.
+NOTE: Make sure that if you move the ZLS executable, you move the `zls.json` config file with it as well!
+
+And finally: Thanks for choosing ZLS!
+```
+
+Check `zls` binary:
+
+```bash
+file zig-cache/bin/zls
+```
+
+Output:
+
+```bash
+zig-cache/bin/zls: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, with debug_info, not stripped
+```
+
+----
 
 ## Optional: Backup the precompiled LLVM Toolchain
 
