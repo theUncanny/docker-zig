@@ -235,7 +235,7 @@ tar xvf "/zig-build/alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.
 
 ## Extra info
 
-### LLVM info
+### LLVM info (glibc based build)
 
 In the container system CLI:
 
@@ -306,4 +306,151 @@ clang version 11.0.1
 Target: x86_64-unknown-linux-gnu
 Thread model: posix
 InstalledDir: /deps/local/bin
+```
+
+Check `ldd` (LLVM generic linker):
+
+```bash
+/deps/local/bin/lld --version
+```
+
+Output:
+
+```bash
+lld is a generic driver.
+Invoke ld.lld (Unix), ld64.lld (macOS), lld-link (Windows), wasm-ld (WebAssembly) instead
+```
+
+Check `ld.lld` (UNIX/Linux LLVM linker):
+
+```bash
+/deps/local/bin/ld.lld --version
+```
+
+Output:
+
+```bash
+LLD 11.0.1 (compatible with GNU linkers)
+```
+
+The linker `ld.lld` is a symbolic link to `lld`:
+
+```bash
+ls -la /deps/local/bin/ld.lld
+```
+
+Output:
+
+```bash
+lrwxrwxrwx    1 root     root             3 Jan 31 20:14 /deps/local/bin/ld.lld -> lld
+```
+
+### LLVM info (musl based build)
+
+In the container system CLI:
+
+```bash
+/deps/local/bin/llc --version
+```
+
+Output:
+
+```bash
+LLVM (http://llvm.org/):
+  LLVM version 11.0.1
+  Optimized build.
+  Default target: x86_64-unknown-linux-musl
+  Host CPU: skylake
+
+  Registered Targets:
+    aarch64    - AArch64 (little endian)
+    aarch64_32 - AArch64 (little endian ILP32)
+    aarch64_be - AArch64 (big endian)
+    amdgcn     - AMD GCN GPUs
+    arm        - ARM
+    arm64      - ARM64 (little endian)
+    arm64_32   - ARM64 (little endian ILP32)
+    armeb      - ARM (big endian)
+    avr        - Atmel AVR Microcontroller
+    bpf        - BPF (host endian)
+    bpfeb      - BPF (big endian)
+    bpfel      - BPF (little endian)
+    hexagon    - Hexagon
+    lanai      - Lanai
+    mips       - MIPS (32-bit big endian)
+    mips64     - MIPS (64-bit big endian)
+    mips64el   - MIPS (64-bit little endian)
+    mipsel     - MIPS (32-bit little endian)
+    msp430     - MSP430 [experimental]
+    nvptx      - NVIDIA PTX 32-bit
+    nvptx64    - NVIDIA PTX 64-bit
+    ppc32      - PowerPC 32
+    ppc64      - PowerPC 64
+    ppc64le    - PowerPC 64 LE
+    r600       - AMD GPUs HD2XXX-HD6XXX
+    riscv32    - 32-bit RISC-V
+    riscv64    - 64-bit RISC-V
+    sparc      - Sparc
+    sparcel    - Sparc LE
+    sparcv9    - Sparc V9
+    systemz    - SystemZ
+    thumb      - Thumb
+    thumbeb    - Thumb (big endian)
+    wasm32     - WebAssembly 32-bit
+    wasm64     - WebAssembly 64-bit
+    x86        - 32-bit X86: Pentium-Pro and above
+    x86-64     - 64-bit X86: EM64T and AMD64
+    xcore      - XCore
+```
+
+Check `clang`:
+
+```bash
+/deps/local/bin/clang --version
+```
+
+Output:
+
+```bash
+clang version 11.0.1
+Target: x86_64-unknown-linux-musl
+Thread model: posix
+InstalledDir: /deps/local/bin
+```
+
+Check `ldd` (LLVM generic linker):
+
+```bash
+/deps/local/bin/lld --version
+```
+
+Output:
+
+```bash
+lld is a generic driver.
+Invoke ld.lld (Unix), ld64.lld (macOS), lld-link (Windows), wasm-ld (WebAssembly) instead
+```
+
+Check `ld.lld` (UNIX/Linux LLVM linker):
+
+```bash
+/deps/local/bin/ld.lld --version
+```
+
+Output:
+
+```bash
+LLD 11.0.1 (compatible with GNU linkers)
+```
+
+The linker `ld.lld` is a symbolic link to `lld`:
+
+```bash
+ls -la /deps/local/bin/ld.lld
+```
+
+Output:
+
+```bash
+lrwxrwxrwx    1 root     root             3 Jan 31 20:14 /deps/local/bin/ld.lld -> lld
 ```
