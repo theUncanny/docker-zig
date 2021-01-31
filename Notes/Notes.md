@@ -40,9 +40,50 @@ apk add \
     zlib-static \
     libstdc++ \
     grep \
+    file \
     git \
     xz
 ```
+
+----
+
+**[TIP] Check the Musl version and dynamic linker**
+
+Check standard dynamic linker (dynamic program loader) with `ldd` (`ldd` invokes the _standard dynamic linker_):
+
+```bash
+ldd
+```
+
+Output:
+
+```bash
+musl libc (x86_64)
+Version 1.2.2
+Dynamic Program Loader
+Usage: /lib/ld-musl-x86_64.so.1 [options] [--] pathname
+```
+
+Show `musl` Alpine Linux info package:
+
+```bash
+apk info musl
+```
+
+Output:
+
+```bash
+musl-1.2.2-r0 description:
+the musl c library (libc) implementation
+
+musl-1.2.2-r0 webpage:
+https://musl.libc.org/
+
+musl-1.2.2-r0 installed size:
+608 KiB
+```
+
+----
 
 ## Download and build LLVM, LLD and Clang
 
@@ -235,6 +276,63 @@ tar xvf "/zig-build/alpine_linux_$(uname -m)_local_llvm_clang_lld_$LLVM_VERSION.
 ```
 
 ## Extra info
+
+### Zig build info
+
+```bash
+cd /deps/zig-linux*/bin && \
+ldd zig
+```
+
+Output:
+
+```bash
+/lib/ld-musl-x86_64.so.1: zig: Not a valid dynamic program
+```
+
+Check `zig` binary info with `file`:
+
+```bash
+file zig
+```
+
+Output:
+
+```bash
+zig: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, with debug_info, not stripped
+```
+
+With `objdump`:
+
+```bash
+objdump -s --section .comment zig
+```
+
+Output:
+
+```bash
+zig:     file format elf64-x86-64
+
+Contents of section .comment:
+ 0000 4743433a 2028416c 70696e65 2031302e  GCC: (Alpine 10.
+ 0010 322e315f 70726531 29203130 2e322e31  2.1_pre1) 10.2.1
+ 0020 20323032 30313230 3300                20201203.
+```
+
+With `readelf`:
+
+```bash
+readelf -p .comment zig
+```
+
+Output:
+
+```bash
+String dump of section '.comment':
+  [     0]  GCC: (Alpine 10.2.1_pre1) 10.2.1 20201203
+```
+
+- Info: https://unix.stackexchange.com/questions/719/can-we-get-compiler-information-from-an-elf-binary
 
 ### LLVM info (glibc based build)
 
