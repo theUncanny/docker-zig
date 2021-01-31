@@ -140,7 +140,7 @@ samu install
 In the container system CLI:
 
 ```bash
-MAKE_JOBS="-j(nproc)"
+MAKE_JOBS="-j$(nproc)"
 # Based on 'master' branch
 COMMIT="master"
 # Based on a specific version (uncomment to use)
