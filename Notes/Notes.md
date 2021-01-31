@@ -32,12 +32,15 @@ apk add \
     pkgconfig \
     python3-dev \
     cmake \
+    make \
     samurai \
     tar \
     libc-dev \
     binutils \
     zlib-static \
-    libstdc++
+    libstdc++ \
+    git \
+    xz
 ```
 
 ## Download and build LLVM, LLD and Clang
