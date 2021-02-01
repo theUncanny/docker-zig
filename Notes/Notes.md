@@ -275,6 +275,7 @@ cd "/deps/zls" && \
 # If you prefer use the master/main branch, uncomment the next line
 #COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
 git checkout "$COMMIT" && \
+rm -Rf "$HOME/.cache/zig" ; \
 /deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT"
 ```
 
