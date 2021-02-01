@@ -12,10 +12,25 @@ cd "/tmp/zig-build" && \
 docker run \
     --rm \
     -it \
+    --mount type=bind,source="$(pwd)",target=/zig-build \
+    alpine:latest
+```
+
+----
+
+**[TO-DO] Check use the current user and group from host system in the container system**
+
+```bash
+mkdir -p "/tmp/zig-build" && \
+cd "/tmp/zig-build" && \
+docker run \
+    --rm \
+    -it \
     -u "$(id -u):$(id -g)" \
     --mount type=bind,source="$(pwd)",target=/zig-build \
     alpine:latest
 ```
+----
 
 ### Install base development tools packages
 
