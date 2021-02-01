@@ -250,6 +250,50 @@ chmod a+rw "$DIRNAME.tar.xz" && \
 mv "$DIRNAME.tar.xz" "/zig-build/"
 ```
 
+In the host system CLI:
+
+```bash
+mkdir -p "$HOME/Dev/Zig" && \
+cd "/tmp/zig-build/" && \
+cp -f zig-linux-x86_64-*.tar.xz "$HOME/Dev/Zig/"
+```
+
+----
+
+**[TIP]**
+
+To restore a Zig toolchain precompiled, in the host system CLI:
+
+```bash
+LLVM_VERSION='11.0.1'
+LLVM_TARGET="x86_64-unknown-linux-musl"
+mkdir -p "/tmp/zig-build" && \
+cp -f "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
+cd "/tmp/zig-build" && \
+docker run \
+    --rm \
+    -it \
+    -u "$(id -u):$(id -g)" \
+    --mount type=bind,source="$(pwd)",target=/zig-build \
+    alpine:latest
+```
+
+Copy the Zig toolchain precompiled package to host-container mount binded path (`/tmp/zig-build/`): 
+
+```bash
+cp -f "$HOME/Dev/Zig/zig-linux-x86_64-*.tar.xz" "/tmp/zig-build/"
+```
+
+In the container system CLI:
+
+```bash
+tar xvf /zig-build/zig-linux-x86_64-*.tar.xz -C /deps && \
+cd /deps && \
+ln -sf zig-linux-x86_64-* install
+```
+
+----
+
 ## Optional: Build `zls` (Zig Language Server)
 
 - https://github.com/zigtools/zls
@@ -277,6 +321,7 @@ cd "/deps/zls" && \
 git checkout "$COMMIT" && \
 rm -Rf "$HOME/.cache/zig" ; \
 /deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT"
+#"$ZIG_INSTALL_PREFIX"/bin/zig build -Drelease-safe -Ddata_version="$COMMIT"
 ```
 
 To create a `zls` configuration file (`zls.json`):
@@ -293,6 +338,7 @@ tee "/deps/zls/zig-cache/bin/zls.json" <<E_O_F > /dev/null 2>&1
   "enable_semantic_tokens": true,
   "operator_completions": true
 }
+
 E_O_F
 ```
 
@@ -449,7 +495,11 @@ mkdir -p "$HOME/Dev/Zig/" && \
 cp -f alpine_linux_*_local_llvm_clang_lld_$LLVM_VERSION.tar.xz "$HOME/Dev/Zig/"
 ```
 
-To compile a new released toolchain version, in the host system CLI:
+----
+
+**[TIP] Restore a precompiled LLVM/Clang/LLD to build a new Zig toolchain release**
+
+To compile a new Zig toolchain version released, in the host system CLI:
 
 ```bash
 LLVM_VERSION='11.0.1'
@@ -473,6 +523,8 @@ LLVM_TARGET="/deps/local/bin/clang --version | grep -o -P "$(uname -m)[\W,\w]+"
 mkdir -p "/deps" && \
 tar xvf "/zig-build/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" -C "/deps"
 ```
+
+----
 
 ## Extra info
 
