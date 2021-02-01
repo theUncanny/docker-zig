@@ -264,7 +264,9 @@ In the container system CLI:
 ```bash
 # Zig prefix install directory
 ZIG_INSTALL_PREFIX='/deps/install'
+# Data version string (select one from src/data/)
 COMMIT='master'
+#COMMIT='0.7.0'
 cd "/deps" && \
 git clone --recurse-submodules https://github.com/zigtools/zls.git && \
 cd "/deps/zls" && \
@@ -273,13 +275,39 @@ cd "/deps/zls" && \
 # If you prefer use the master/main branch, uncomment the next line
 #COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
 git checkout "$COMMIT" && \
-/deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT" && \
+/deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT"
+```
+
+To create a `zls` configuration file (`zls.json`):
+
+```bash
+tee "/deps/zls/zig-cache/bin/zls.json" <<E_O_F > /dev/null 2>&1
+{
+  "zig_exe_path": null,
+  "zig_lib_path": null,
+  "build_runner_path": null,
+  "build_runner_cache_path": null, 
+  "enable_snippets": true,
+  "warn_style": true,
+  "enable_semantic_tokens": true,
+  "operator_completions": true
+}
+E_O_F
+```
+
+Copy `zls` binary and `zls.json` config file to the Zig toolchain install prefix path:
+
+```bash
 cp 'zig-cache/bin/zls' "$ZIG_INSTALL_PREFIX/bin/" && \
 cp 'zig-cache/bin/zls.json' "$ZIG_INSTALL_PREFIX/bin/" && \
 chmod a+x "$ZIG_INSTALL_PREFIX/bin/zls"
 ```
 
-- ZLS configuration file `zls.json`:
+----
+
+**[INFO] The `zls` config file (JSON format)**
+
+- `zls.json`:
 
 ```json
 {
@@ -296,6 +324,8 @@ chmod a+x "$ZIG_INSTALL_PREFIX/bin/zls"
 
 - `zig_exe_path`: Set to `null` value so the `zls` look up the `zig` binary in `PATH` environment variable (when it is setup, the `zig` binary absolute path must be `$ZIG_TOOLCHAIN_PATH/bin/zig`). Will be used to infer the zig standard library path if none is provided.
 - `zig_lib_path`: Set to `null` because `zig` binary will be used to infer the zig standard library path if none is provided.
+
+----
 
 ----
 
@@ -350,6 +380,42 @@ Output:
 
 ```bash
 zig-cache/bin/zls: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, with debug_info, not stripped
+```
+
+----
+
+----
+
+**[TO-DO]**
+
+When try to compile `zls` using a `zig` binary based on `0.7.0` or `0.7.1` version release, the build process fail: 
+
+```bash
+zig build -Drelease-safe -Ddata_version="0.7.0"
+```
+
+Output:
+
+```bash
+./src/document_store.zig:110:36: error: no member named 'shrinkAndFree' in struct 'std.array_list.ArrayListAlignedUnmanaged(document_store.Pkg,null)'
+                build_file.packages.shrinkAndFree(allocator, 0);
+                                   ^
+./src/document_store.zig:419:12: note: referenced here
+        }) catch |err| {
+           ^
+./src/main.zig:1193:5: note: referenced here
+    try document_store.applySave(handle);
+    ^
+./src/analysis.zig:202:26: error: expected optional type, found '*std.zig.ast.Node'
+            return ((decl.name orelse return null).castTag(.StringLiteral) orelse return null).token;
+                         ^
+./src/analysis.zig:202:32: note: referenced here
+            return ((decl.name orelse return null).castTag(.StringLiteral) orelse return null).token;
+                               ^
+zls...The following command exited with error code 1:
+/deps/zig/build/zig build-exe /deps/zls/src/main.zig --pkg-begin build_options /deps/zls/zig-cache/zls_build_options.zig --pkg-end -OReleaseSafe --cache-dir /deps/zls/zig-cache --global-cache-dir /root/.cache/zig --name zls --pkg-begin known-folders /deps/zls/src/known-folders/known-folders.zig --pkg-end --enable-cache
+error: the following build command failed with exit code 1:
+/deps/zls/zig-cache/o/46f7a20dc6466be02aa2463bd1ddc27d/build /deps/zig/build/zig /deps/zls /deps/zls/zig-cache /root/.cache/zig -Drelease-safe -Ddata_version=0.7.0
 ```
 
 ----
