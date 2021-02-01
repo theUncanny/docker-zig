@@ -211,9 +211,9 @@ cd "/deps" && \
 git clone https://github.com/zig-lang/zig && \
 cd "/deps/zig" && \
 # If you prefer the latest stable version, uncomment the next line
-#COMMIT="$(git --no-pager tag | sort -rV | head -1)"
+#COMMIT="$(git --no-pager tag | sort -rV | head -1)" && \
 # If you prefer use the master/main branch, uncomment the next line
-#COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
+#COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')" && \
 git checkout "$COMMIT" && \
 mkdir -p "$ZIG_INSTALL_PREFIX" && \
 mkdir -p "/deps/zig/build" && \
