@@ -241,6 +241,7 @@ mv "$DIRNAME.tar.xz" "/zig-build/"
 - https://github.com/zigtools/zls/wiki/Downloading-and-Building-ZLS
 - https://github.com/zigtools/zls/blob/master/README.md#configuration-options
 - https://github.com/zigtools/zls/blob/master/README.md#usage
+- https://github.com/zigtools/zls/wiki/Installing-for-Kakoune
 - https://github.com/ziglibs/known-folders#folder-list
 
 In the container system CLI:
