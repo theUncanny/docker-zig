@@ -54,6 +54,9 @@ apk add \
     binutils \
     zlib-static \
     libstdc++ \
+    bash \
+    curl \
+    nano \
     grep \
     file \
     git \
