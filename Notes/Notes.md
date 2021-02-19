@@ -38,8 +38,8 @@ In the container system CLI:
 
 ```bash
 apk update && \
-apk upgrade && \
-apk add \
+apk upgrade --no-cache && \
+apk add --no-cache \
     gcc \
     g++ \
     automake \
