@@ -109,7 +109,7 @@ In the container system CLI:
 
 ```bash
 mkdir -p /deps
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 # Linux x86-64 based on GNU standard C library implementation (glibc)
 #LLMV_HOST='x86_64-unknown-linux-gnu'
 #LLVM_TARGET='x86_64-unknown-linux-gnu'
@@ -268,7 +268,7 @@ cp -f zig-linux-x86_64-*.tar.xz "$HOME/Dev/Zig/"
 To restore a Zig toolchain precompiled, in the host system CLI:
 
 ```bash
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "/tmp/zig-build" && \
 cp -f "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
@@ -477,7 +477,7 @@ error: the following build command failed with exit code 1:
 In the container system CLI:
 
 ```bash
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 LLVM_TARGET="/deps/local/bin/clang --version | grep -o -P "$(uname -m)[\W,\w]+"
 #LLVM_TARGET="x86_64-unknown-linux-musl"
 cd "/zig-build/" && \
@@ -492,7 +492,7 @@ chmod a+rw "alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz"
 In the host system CLI:
 
 ```bash
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 #LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "$HOME/Dev/Zig/" && \
 cp -f alpine_linux_*_local_llvm_clang_lld_$LLVM_VERSION.tar.xz "$HOME/Dev/Zig/"
@@ -505,7 +505,7 @@ cp -f alpine_linux_*_local_llvm_clang_lld_$LLVM_VERSION.tar.xz "$HOME/Dev/Zig/"
 To compile a new Zig toolchain version released, in the host system CLI:
 
 ```bash
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "/tmp/zig-build" && \
 cp -f "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
@@ -521,7 +521,7 @@ docker run \
 In the container system CLI:
 
 ```bash
-LLVM_VERSION='11.0.1'
+LLVM_VERSION='11.1.0'
 LLVM_TARGET="/deps/local/bin/clang --version | grep -o -P "$(uname -m)[\W,\w]+"
 mkdir -p "/deps" && \
 tar xvf "/zig-build/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" -C "/deps"
@@ -600,7 +600,7 @@ Output:
 
 ```bash
 LLVM (http://llvm.org/):
-  LLVM version 11.0.1
+  LLVM version 11.1.0
   Optimized build.
   Default target: x86_64-unknown-linux-gnu
   Host CPU: skylake
@@ -655,7 +655,7 @@ Check `clang`:
 Output:
 
 ```bash
-clang version 11.0.1
+clang version 11.1.0
 Target: x86_64-unknown-linux-gnu
 Thread model: posix
 InstalledDir: /deps/local/bin
@@ -683,7 +683,7 @@ Check `ld.lld` (UNIX/Linux LLVM linker):
 Output:
 
 ```bash
-LLD 11.0.1 (compatible with GNU linkers)
+LLD 11.1.0 (compatible with GNU linkers)
 ```
 
 The linker `ld.lld` is a symbolic link to `lld`:
@@ -710,7 +710,7 @@ Output:
 
 ```bash
 LLVM (http://llvm.org/):
-  LLVM version 11.0.1
+  LLVM version 11.1.0
   Optimized build.
   Default target: x86_64-unknown-linux-musl
   Host CPU: skylake
@@ -765,7 +765,7 @@ Check `clang`:
 Output:
 
 ```bash
-clang version 11.0.1
+clang version 11.1.0
 Target: x86_64-unknown-linux-musl
 Thread model: posix
 InstalledDir: /deps/local/bin
@@ -793,7 +793,7 @@ Check `ld.lld` (UNIX/Linux LLVM linker):
 Output:
 
 ```bash
-LLD 11.0.1 (compatible with GNU linkers)
+LLD 11.1.0 (compatible with GNU linkers)
 ```
 
 The linker `ld.lld` is a symbolic link to `lld`:
