@@ -105,6 +105,14 @@ musl-1.2.2-r0 installed size:
 
 ## Download and build LLVM, LLD and Clang
 
+- https://llvm.org/
+- https://releases.llvm.org/
+- https://github.com/llvm/llvm-project
+- https://github.com/llvm/llvm-project/releases
+- https://www.phoronix.com/scan.php?page=news_item&px=LLVM-11.1-Released
+- http://www.linuxfromscratch.org/blfs/view/svn/general/llvm.html
+
+
 In the container system CLI:
 
 ```bash
