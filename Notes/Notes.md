@@ -327,7 +327,7 @@ In the host system CLI:
 ```bash
 mkdir -p "$HOME/Dev/Zig" && \
 cd "/tmp/zig-build/" && \
-cp -f zig-linux-x86_64-*.tar.xz "$HOME/Dev/Zig/"
+cp -f -v zig-linux-x86_64-*.tar.xz "$HOME/Dev/Zig/"
 ```
 
 ----
@@ -340,7 +340,7 @@ To restore a Zig toolchain precompiled, in the host system CLI:
 LLVM_VERSION='11.1.0'
 LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "/tmp/zig-build" && \
-cp -f "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
+cp -f -v "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
 cd "/tmp/zig-build" && \
 docker run \
     --rm \
@@ -353,7 +353,7 @@ docker run \
 Copy the Zig toolchain precompiled package to host-container mount binded path (`/tmp/zig-build/`): 
 
 ```bash
-cp -f "$HOME/Dev/Zig/zig-linux-x86_64-*.tar.xz" "/tmp/zig-build/"
+cp -f -v "$HOME/Dev/Zig/zig-linux-x86_64-*.tar.xz" "/tmp/zig-build/"
 ```
 
 In the container system CLI:
@@ -564,7 +564,7 @@ In the host system CLI:
 LLVM_VERSION='11.1.0'
 #LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "$HOME/Dev/Zig/" && \
-cp -f alpine_linux_*_local_llvm_clang_lld_$LLVM_VERSION.tar.xz "$HOME/Dev/Zig/"
+cp -f -v alpine_linux_*_local_llvm_clang_lld_$LLVM_VERSION.tar.xz "$HOME/Dev/Zig/"
 ```
 
 ----
@@ -577,7 +577,7 @@ To compile a new Zig toolchain version released, in the host system CLI:
 LLVM_VERSION='11.1.0'
 LLVM_TARGET="x86_64-unknown-linux-musl"
 mkdir -p "/tmp/zig-build" && \
-cp -f "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
+cp -f -v "$HOME/Dev/Zig/alpine_linux_$LLVM_TARGET_local_llvm_clang_lld_$LLVM_VERSION.tar.xz" "/tmp/zig-build/" && \
 cd "/tmp/zig-build" && \
 docker run \
     --rm \
