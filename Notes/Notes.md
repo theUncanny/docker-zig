@@ -547,7 +547,7 @@ In the container system CLI:
 
 ```bash
 LLVM_VERSION='11.1.0'
-LLVM_TARGET="/deps/local/bin/clang --version | grep -o -P "$(uname -m)[\W,\w]+"
+LLVM_TARGET="$(/deps/local/bin/clang --version | grep -e 'Target:' | cut -d' ' -f2)"
 #LLVM_TARGET="x86_64-unknown-linux-musl"
 cd "/zig-build/" && \
 tar cvf \
