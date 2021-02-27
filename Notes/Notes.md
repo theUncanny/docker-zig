@@ -77,11 +77,11 @@ apk add \
 
 ----
 
-**[NOTE]**
+**[NOTE] Alpine Linux `build-dependencies` "virtual meta package"**
 
-The `apk` option, `--virtual`, "tag" the argument immediately following is what the group is named so, in the previous block, `apk` creates a group named `build-dependencies`, consisting of alpine-sdk, build-base, musl-dev, gcc, git, etc., and then installs all the packages listed.
+The `apk` option, `--virtual`, "tag" the argument immediately following is what the group is named so, in the previous block, `apk` creates a group named `build-dependencies` such as "virtual meta package" (consisting of `alpine-sdk`, `build-base`, `musl-dev`, `gcc`, `git`, etc.), and then `apk` installs all the packages now grouped by the `build-dependencies` virtual meta package:
 
-To find the installed virtual package `build-dependencies`:
+To find the installed virtual meta package `build-dependencies`:
 
 ```bash
 apk list *build* | grep 'build-dependencies'
