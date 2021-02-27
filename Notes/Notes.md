@@ -265,9 +265,6 @@ CXX="/deps/local/bin/clang++"
 # Some gcc flags like -pipe and -pthread also work, though they might be ignored by clang.
 CFLAGS="-O2 -pipe -march=native"
 CXXFLAGS="$CFLAGS"
-
-# Flags for dragonegg; just use all the gcc flags you like and append -fplugin=/path/to/dragonegg.so
-#CFLAGS="-march=k8 -O2 -fplugin=/usr/lib64/llvm/dragonegg.so"
 ```
 
 ```bash
