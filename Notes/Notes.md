@@ -313,7 +313,7 @@ cd "/deps"
 Compress (in a `.tar.xz` file) the `zig` toolchain build in a package (to backup, copy and distribute it) from the container systm to the host system:
 
 ```bash
-VERSION="$(install/bin/zig version)" && \
+VERSION="$(/deps/install/bin/zig version)" && \
 DIRNAME="zig-linux-$ARCH-$VERSION" && \
 cd "/deps" && \
 mv install "$DIRNAME" && \
