@@ -2,7 +2,7 @@
 
 Based on: https://github.com/ziglang/docker-zig
 
-## Run an Alpine Linux based container
+## Run an Alpine Linux based containerz
 
 In the host system CLI:
 
@@ -381,19 +381,14 @@ In the container system CLI:
 # Zig prefix install directory
 ZIG_INSTALL_PREFIX='/deps/install'
 # Data version string (select one from src/data/)
-COMMIT='master'
-#COMMIT='0.7.0'
+ZIG_VERSION='master'
+#ZIG_VERSION='0.7.0'
 cd "/deps" && \
 git clone --recurse-submodules https://github.com/zigtools/zls.git && \
 cd "/deps/zls" && \
-# If you prefer the latest stable version, uncomment the next line
-#COMMIT="$(git --no-pager tag | sort -rV | head -1)"
-# If you prefer use the master/main branch, uncomment the next line
-#COMMIT="$(git --no-pager branch | grep -q 'master' && echo 'master' || echo 'main')"
-git checkout "$COMMIT" && \
 rm -Rf "$HOME/.cache/zig" ; \
-/deps/zig/build/zig build -Drelease-safe -Ddata_version="$COMMIT"
-#"$ZIG_INSTALL_PREFIX"/bin/zig build -Drelease-safe -Ddata_version="$COMMIT"
+/deps/zig/build/zig build -Drelease-safe -Ddata_version="$ZIG_VERSION"
+#"$ZIG_INSTALL_PREFIX"/bin/zig build -Drelease-safe -Ddata_version="$ZIG_VERSION"
 ```
 
 To create a `zls` configuration file (`zls.json`):
