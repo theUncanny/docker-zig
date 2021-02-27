@@ -39,7 +39,12 @@ In the container system CLI:
 ```bash
 apk update && \
 apk upgrade --no-cache && \
-apk add --update --no-cache \
+apk add \
+    --update \
+    --no-cache \
+    --virtual build-dependencies \
+    alpine-sdk \
+    build-base \
     musl \
     musl-dev \
     gcc \
@@ -59,6 +64,8 @@ apk add --update --no-cache \
     readline-dev \
     readline-static \
     libstdc++ \
+    libffi-dev \
+    openssl-dev \
     bash \
     curl \
     nano \
@@ -67,6 +74,45 @@ apk add --update --no-cache \
     git \
     xz
 ```
+
+----
+
+**[NOTE]**
+
+The `apk` option, `--virtual`, "tag" the argument immediately following is what the group is named so, in the previous block, `apk` creates a group named `build-dependencies`, consisting of alpine-sdk, build-base, musl-dev, gcc, git, etc., and then installs all the packages listed.
+
+To find the installed virtual package `build-dependencies`:
+
+```bash
+apk list *build* | grep 'build-dependencies'
+```
+
+Output:
+
+```bash
+build-dependencies-20210227.181655 noarch {build-dependencies} () [installed]
+```
+
+Package info:
+
+```bash
+apk info build-dependencies
+```
+
+Output:
+
+```bash
+build-dependencies-20210227.181655 description:
+virtual meta package
+
+build-dependencies-20210227.181655 webpage:
+
+
+build-dependencies-20210227.181655 installed size:
+0 B
+```
+
+----
 
 ----
 
