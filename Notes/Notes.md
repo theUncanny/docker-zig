@@ -39,7 +39,9 @@ In the container system CLI:
 ```bash
 apk update && \
 apk upgrade --no-cache && \
-apk add --no-cache \
+apk add --update --no-cache \
+    musl \
+    musl-dev \
     gcc \
     g++ \
     automake \
@@ -52,7 +54,10 @@ apk add --no-cache \
     tar \
     libc-dev \
     binutils \
+    zlib-dev \
     zlib-static \
+    readline-dev \
+    readline-static \
     libstdc++ \
     bash \
     curl \
